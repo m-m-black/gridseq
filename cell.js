@@ -4,23 +4,29 @@ class Cell {
 		this.y = y;
 		this.size = size;
 		this.highlighted = false;
+		this.active = false;
+		this.color = color(200, 0, 0);
 	}
 
 	display() {
-		if (this.highlighted) {
-			fill(0, 200, 0);
-		} else {
-			fill(200, 0, 0);
-		}
+		fill(this.color);
 		rect(this.x, this.y, this.size, this.size);
 	}
 
 	highlight() {
-		this.highlighted = true;
+		this.color = color(0, 200, 0);
 	}
 
 	dehighlight() {
-		this.highlighted = false;
+		this.color = color(200, 0, 0);
+	}
+
+	activate() {
+		this.active = true;
+	}
+
+	deactivate() {
+		this.active = false;
 	}
 
 	within(mouseX, mouseY) {

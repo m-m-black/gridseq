@@ -40,6 +40,10 @@ function draw() {
 	})
 }
 
+function mousePressed() {
+	return false;
+}
+
 function initCells() {
 	let cells = [];
 	for (let i = 0; i < axis; i += cellSize) {
