@@ -22,10 +22,20 @@ function draw() {
 	fill(100);
 	rect(0, 0, axis, axis);
 
-	cells.forEach(row => {
-		row.forEach(cell => {
+	cells.forEach((row, rowIndex) => {
+		row.forEach((cell, cellIndex) => {
 			cell.display();
-			cell.within(mouseX - width / 2, mouseY - height / 2);
+			let within = cell.within(mouseX - width / 2, mouseY - height / 2);
+			if (within) {
+				grid.rows[rowIndex].forEach(c => {
+					c.highlight();
+					c.display();
+				})
+				grid.columns[cellIndex].forEach(c => {
+					c.highlight();
+					c.display();
+				})
+			}
 		})
 	})
 }
