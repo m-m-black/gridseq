@@ -1,8 +1,10 @@
 class Cell {
-	constructor(x, y, size) {
+	constructor(x, y, size, rowIndex, colIndex) {
 		this.x = x;
 		this.y = y;
 		this.size = size;
+		this.rowIndex = rowIndex;
+		this.colIndex = colIndex;
 		this.highlighted = false;
 		this.active = false; // Cell has been clicked on
 		this.canActivate = true; // Cell can be clicked on
@@ -12,6 +14,11 @@ class Cell {
 	display() {
 		fill(this.color);
 		rect(this.x, this.y, this.size, this.size);
+		let string = this.rowIndex + ", " + this.colIndex;
+		// Text for debugging
+		fill(255);
+		textAlign(CENTER, CENTER);
+		text(string, this.x, this.y);
 	}
 
 	highlight() {

@@ -2,6 +2,7 @@ let axis;
 let cellSize;
 let cells;
 let grid;
+let activeCells;
 
 const NUM_ROWS = 10;
 
@@ -12,6 +13,7 @@ function setup() {
 	cells = initCells();
 	grid = new Grid();
 	grid.initGrid(cells);
+	activeCells = [];
 }
 
 function draw() {
@@ -47,9 +49,24 @@ function mousePressed() {
 	cells.forEach((row,rowIndex) => {
 		row.forEach((cell, cellIndex) => {
 			if (cell.within(mouseX - width / 2, mouseY - height / 2)) {
-				if (cell.canActivate) {
+				if (cell.canActivate && !cell.active) {
+					// Activate this cell
 					cell.activate();
-					blockCells(rowIndex, cellIndex);
+					// Add this cell to collection of active cells
+					activeCells.push(cell);
+					// Block cells in corresponding row and column
+					blockCells(cell);
+				} else if (cell.canActivate && cell.active) {
+					// Deactivate this cell
+					cell.deactivate();
+					// Remove this cell from collection of active cells
+					removeCell(cell);
+					// Unblock all cells
+					unblockCells();
+					// Block cells for all active cells in collection
+					activeCells.forEach(cell => {
+						blockCells(cell);
+					})
 				}
 			}
 		})
@@ -57,26 +74,52 @@ function mousePressed() {
 	return false;
 }
 
-// Prevent specified cells from being able to activate
-function blockCells(rowIndex, colIndex) {
-	grid.rows[rowIndex].forEach(cell => {
-		cell.block();
+function unblockCells() {
+	cells.forEach(row => {
+		row.forEach(cell => {
+			cell.unblock();
+		})
 	})
-	grid.columns[colIndex].forEach(cell => {
-		cell.block();
+}
+
+function blockCells(cell) {
+	grid.rows[cell.rowIndex].forEach((c, i) => {
+		if (i != cell.colIndex) {
+			c.block();
+		}
 	})
+	grid.columns[cell.colIndex].forEach((c, i) => {
+		if (i != cell.rowIndex) {
+			c.block();
+		}
+	})
+}
+
+function removeCell(cell) {
+	let index = 0;
+	activeCells.forEach((c, i) => {
+		if (c === cell) {
+			index = i;
+		}
+	})
+	activeCells.splice(index, 1);
 }
 
 function initCells() {
 	let cells = [];
+	let rowIndex = 0;
+	let colIndex = 0;
 	for (let i = 0; i < axis; i += cellSize) {
 		let row = [];
+		colIndex = 0;
 		for (let j = 0; j < axis; j += cellSize) {
 			let x = j - (axis / 2) + (cellSize / 2);
 			let y = i - (axis / 2) + (cellSize / 2);
-			row.push(new Cell(x, y, cellSize));
+			row.push(new Cell(x, y, cellSize, rowIndex, colIndex));
+			colIndex++;
 		}
 		cells.push(row);
+		rowIndex++;
 	}
 	return cells;
 }
