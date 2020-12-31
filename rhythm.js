@@ -118,4 +118,19 @@ class Rhythm {
 			this.right.play();
 		}
 	}
+
+	cleanup() {
+		if (this.up) {
+			this.up.deTempHighlight();
+		}
+		if (this.down) {
+			this.down.deTempHighlight();
+		}
+		if (this.left) {
+			this.left.deTempHighlight();
+		}
+		if (this.right) {
+			this.right.deTempHighlight();
+		}
+	}
 }

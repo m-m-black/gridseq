@@ -76,6 +76,8 @@ function mousePressed() {
 					cell.deactivate();
 					// Remove this cell from collection of active cells
 					removeCell(cell);
+					// Remove the rhythm associated with this cell
+					removeRhythm(cell);
 					// Unblock all cells
 					unblockCells();
 					// Block cells for all active cells in collection
@@ -92,11 +94,11 @@ function mousePressed() {
 }
 
 // DEBUGGING FUNCTION
-function keyPressed() {
-	rhythms.forEach(rhythm => {
-		rhythm.update(cells);
-	})
-}
+// function keyPressed() {
+// 	rhythms.forEach(rhythm => {
+// 		rhythm.update(cells);
+// 	})
+// }
 
 function unblockCells() {
 	cells.forEach(row => {
@@ -147,6 +149,17 @@ function removeCell(cell) {
 		}
 	})
 	activeCells.splice(index, 1);
+}
+
+function removeRhythm(cell) {
+	let index = 0;
+	rhythms.forEach((r, i) => {
+		if (r.start === cell) {
+			r.cleanup();
+			index = i;
+		}
+	})
+	rhythms.splice(index, 1);
 }
 
 function initCells() {
