@@ -10,6 +10,7 @@ class Cell {
 		this.canActivate = true; // Cell can be clicked on
 		this.isIntersect = false; // Cells is at an intersection point
 		this.color = color(200, 0, 0);
+		this.currentColor = color(200, 0, 0);
 	}
 
 	display() {
@@ -22,6 +23,11 @@ class Cell {
 		text(string, this.x, this.y);
 	}
 
+	play() {
+		// Play the sound associated with this cell
+		console.log("Play cell (" + this.rowIndex + ", " + this.colIndex + ")");
+	}
+
 	highlight() {
 		// "active" and "isIntersect" are special statuses not to be highlighted
 		if (!this.active && !this.isIntersect) {
@@ -32,7 +38,20 @@ class Cell {
 	dehighlight() {
 		// "active" and "isIntersect" are special statuses not to be highlighted
 		if (!this.active && !this.isIntersect) {
-			this.color = color(200, 0, 0);
+			//this.color = color(200, 0, 0);
+			this.color = this.currentColor;
+		}
+	}
+
+	tempHighlight() {
+		if (!this.active && !this.isIntersect) {
+			this.currentColor = color(200, 200, 0);
+		}
+	}
+
+	deTempHighlight() {
+		if (!this.active && !this.isIntersect) {
+			this.currentColor = color(200, 0, 0);
 		}
 	}
 

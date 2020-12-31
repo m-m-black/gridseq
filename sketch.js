@@ -4,6 +4,7 @@ let cells;
 let grid;
 let activeCells;
 let intersectCells;
+let rhythms;
 
 const NUM_ROWS = 10;
 
@@ -16,6 +17,7 @@ function setup() {
 	grid.initGrid(cells);
 	activeCells = [];
 	intersectCells = [];
+	rhythms = [];
 }
 
 function draw() {
@@ -60,6 +62,8 @@ function mousePressed() {
 					blockCells(cell);
 					// Determine intersection cells
 					setIntersectCells();
+					// Add new rhythm for this cell
+					rhythms.push(new Rhythm(cell, cells));
 				} else if (cell.canActivate && cell.active) {
 					// Deactivate this cell
 					cell.deactivate();
@@ -78,6 +82,12 @@ function mousePressed() {
 		})
 	})
 	return false;
+}
+
+function keyPressed() {
+	rhythms.forEach(rhythm => {
+		rhythm.update(cells);
+	})
 }
 
 function unblockCells() {
