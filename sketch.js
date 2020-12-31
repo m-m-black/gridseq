@@ -3,6 +3,7 @@ let cellSize;
 let cells;
 let grid;
 let activeCells;
+let intersectCells;
 
 const NUM_ROWS = 10;
 
@@ -14,6 +15,7 @@ function setup() {
 	grid = new Grid();
 	grid.initGrid(cells);
 	activeCells = [];
+	intersectCells = [];
 }
 
 function draw() {
@@ -56,6 +58,8 @@ function mousePressed() {
 					activeCells.push(cell);
 					// Block cells in corresponding row and column
 					blockCells(cell);
+					// Determine intersection cells
+					setIntersectCells();
 				} else if (cell.canActivate && cell.active) {
 					// Deactivate this cell
 					cell.deactivate();
@@ -67,6 +71,8 @@ function mousePressed() {
 					activeCells.forEach(cell => {
 						blockCells(cell);
 					})
+					// Determine intersection cells
+					setIntersectCells();
 				}
 			}
 		})
@@ -92,6 +98,26 @@ function blockCells(cell) {
 		if (i != cell.rowIndex) {
 			c.block();
 		}
+	})
+}
+
+function setIntersectCells() {
+	// Remove intersect status from current intersect cells
+	intersectCells.forEach(cell => {
+		cell.removeIntersect();
+	})
+	// Clear intersect cells array
+	intersectCells = [];
+	// Calculate intersect cells
+	activeCells.forEach((cell1, index1) => {
+		let row = cell1.rowIndex;
+		activeCells.forEach((cell2, index2) => {
+			if (index2 != index1) {
+				let col = cell2.colIndex;
+				cells[row][col].setIntersect();
+				intersectCells.push(cells[row][col]);
+			}
+		})
 	})
 }
 

@@ -8,6 +8,7 @@ class Cell {
 		this.highlighted = false;
 		this.active = false; // Cell has been clicked on
 		this.canActivate = true; // Cell can be clicked on
+		this.isIntersect = false; // Cells is at an intersection point
 		this.color = color(200, 0, 0);
 	}
 
@@ -22,13 +23,15 @@ class Cell {
 	}
 
 	highlight() {
-		if (!this.active) {
+		// "active" and "isIntersect" are special statuses not to be highlighted
+		if (!this.active && !this.isIntersect) {
 			this.color = color(0, 200, 0);
 		}
 	}
 
 	dehighlight() {
-		if (!this.active) {
+		// "active" and "isIntersect" are special statuses not to be highlighted
+		if (!this.active && !this.isIntersect) {
 			this.color = color(200, 0, 0);
 		}
 	}
@@ -41,6 +44,16 @@ class Cell {
 	deactivate() {
 		this.color = color(200, 0, 0);
 		this.active = false;
+	}
+
+	setIntersect() {
+		this.color = color(0);
+		this.isIntersect = true;
+	}
+
+	removeIntersect() {
+		this.color = color(200, 0, 0);
+		this.isIntersect = false;
 	}
 
 	block() {
