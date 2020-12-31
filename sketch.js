@@ -18,6 +18,7 @@ function setup() {
 	activeCells = [];
 	intersectCells = [];
 	rhythms = [];
+	setInterval(go, 250);
 }
 
 function draw() {
@@ -46,6 +47,12 @@ function draw() {
 				cell.dehighlight();
 			}
 		})
+	})
+}
+
+function go() {
+	rhythms.forEach(rhythm => {
+		rhythm.update(cells);
 	})
 }
 
@@ -84,6 +91,7 @@ function mousePressed() {
 	return false;
 }
 
+// DEBUGGING FUNCTION
 function keyPressed() {
 	rhythms.forEach(rhythm => {
 		rhythm.update(cells);
