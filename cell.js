@@ -11,6 +11,8 @@ class Cell {
 		this.isIntersect = false; // Cells is at an intersection point
 		this.color = color(200, 0, 0);
 		this.currentColor = color(200, 0, 0);
+		// Audio components
+		this.synth = new Synth();
 	}
 
 	display() {
@@ -26,6 +28,8 @@ class Cell {
 	play() {
 		// Play the sound associated with this cell
 		console.log("Play cell (" + this.rowIndex + ", " + this.colIndex + ")");
+		let note = int(random(48, 73));
+		this.synth.playNote(note, 0.25);
 	}
 
 	highlight() {
