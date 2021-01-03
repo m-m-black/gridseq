@@ -13,6 +13,7 @@ class Cell {
 		this.currentColor = color(200, 0, 0);
 		// Audio components
 		this.synth = new Synth();
+		this.playing = false; // Is the synth currently playing a note?
 	}
 
 	display() {
@@ -25,11 +26,13 @@ class Cell {
 		text(string, this.x, this.y);
 	}
 
-	play() {
+	play(cycleStartTime) {
+		this.playing = true;
 		// Play the sound associated with this cell
-		console.log("Play cell (" + this.rowIndex + ", " + this.colIndex + ")");
+		//console.log("Play cell (" + this.rowIndex + ", " + this.colIndex + ")");
 		let note = int(random(48, 73));
-		this.synth.playNote(note, 0.25);
+		this.synth.playNote(note, 0.25, cycleStartTime);
+		this.playing = false;
 	}
 
 	highlight() {

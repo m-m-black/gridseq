@@ -6,7 +6,11 @@ let activeCells;
 let intersectCells;
 let rhythms;
 
+let interval;
+let expected;
+
 const NUM_ROWS = 10;
+const TEMPO = 125;
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
@@ -18,7 +22,23 @@ function setup() {
 	activeCells = [];
 	intersectCells = [];
 	rhythms = [];
-	setInterval(go, 250);
+	
+	//setInterval(go, TEMPO);
+	
+	interval = TEMPO;
+	expected = Date.now() + interval;
+	//setTimeout(step, interval);
+
+	let sloop = new p5.SoundLoop(go, 0.125);
+	sloop.start();
+
+}
+
+function step(cycleStartTime) {
+	let dt = Date.now() - expected;
+	go(cycleStartTime);
+	expected += interval;
+	setTimeout(step, Math.max(0, interval - dt));
 }
 
 function draw() {
@@ -50,9 +70,9 @@ function draw() {
 	})
 }
 
-function go() {
+function go(cycleStartTime) {
 	rhythms.forEach(rhythm => {
-		rhythm.update(cells);
+		rhythm.update(cells, cycleStartTime);
 	})
 }
 

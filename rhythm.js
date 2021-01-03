@@ -13,10 +13,10 @@ class Rhythm {
 		this.atEndCol = 0;
 	}
 
-	update(cells) {
+	update(cells, cycleStartTime) {
 		this.updateRow(cells);
 		this.updateCol(cells);
-		this.play();
+		this.play(cycleStartTime);
 	}
 
 	updateRow(cells) {
@@ -104,18 +104,18 @@ class Rhythm {
 		}
 	}
 
-	play() {
-		if (this.up && this.up.isIntersect) {
-			this.up.play();
+	play(cycleStartTime) {
+		if (this.up && this.up.isIntersect && !(this.up.playing)) {
+			this.up.play(cycleStartTime);
 		}
-		if (this.down && this.down.isIntersect) {
-			this.down.play();
+		if (this.down && this.down.isIntersect && !(this.down.playing)) {
+			this.down.play(cycleStartTime);
 		}
-		if (this.left && this.left.isIntersect) {
-			this.left.play();
+		if (this.left && this.left.isIntersect && !(this.left.playing)) {
+			this.left.play(cycleStartTime);
 		}
-		if (this.right && this.right.isIntersect) {
-			this.right.play();
+		if (this.right && this.right.isIntersect && !(this.right.playing)) {
+			this.right.play(cycleStartTime);
 		}
 	}
 
