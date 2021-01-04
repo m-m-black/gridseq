@@ -12,7 +12,6 @@ class Cell {
 		this.color = color(200, 0, 0);
 		this.currentColor = color(200, 0, 0);
 		// Audio components
-		this.synth = new Synth();
 		this.playing = false; // Is the synth currently playing a note?
 		this.sound = sounds[int(random(sounds.length))];
 	}

@@ -5,11 +5,9 @@ let grid;
 let activeCells;
 let intersectCells;
 let rhythms;
-
-let interval;
-let expected;
-
 let sounds;
+let sloop;
+let sessionStarted;
 
 const NUM_ROWS = 10;
 const TEMPO = 125;
@@ -34,29 +32,39 @@ function setup() {
 	activeCells = [];
 	intersectCells = [];
 	rhythms = [];
-
-	let sloop = new p5.SoundLoop(go, 0.125);
-	sloop.start();
+	sessionStarted = false;
 }
 
 function draw() {
 	background(0);
 	rectMode(CENTER);
 
-	noStroke();
-	translate(width / 2, height / 2);
-	fill(100);
-	rect(0, 0, axis, axis);
+	if (sessionStarted) {
+		noStroke();
+		translate(width / 2, height / 2);
+		fill(100);
+		rect(0, 0, axis, axis);
 
-	noFill();
-	strokeWeight(1);
-	stroke(255);
+		noFill();
+		strokeWeight(1);
+		stroke(255);
 
-	cells.forEach((row, rowIndex) => {
-		row.forEach((cell, cellIndex) => {
-			cell.display();
+		cells.forEach((row, rowIndex) => {
+			row.forEach((cell, cellIndex) => {
+				cell.display();
+			})
 		})
-	})
+	} else {
+		drawText();
+	}
+}
+
+function drawText() {
+	fill(200);
+	textSize(width / 50);
+	textAlign(CENTER, CENTER);
+	textFont("Comfortaa");
+	text("Click anywhere to start...", width / 2, height / 2);
 }
 
 function go(cycleStartTime) {
@@ -66,39 +74,46 @@ function go(cycleStartTime) {
 }
 
 function mousePressed() {
-	cells.forEach((row,rowIndex) => {
-		row.forEach((cell, cellIndex) => {
-			if (cell.within(mouseX - width / 2, mouseY - height / 2)) {
-				if (cell.canActivate && !cell.active) {
-					// Activate this cell
-					cell.activate();
-					// Add this cell to collection of active cells
-					activeCells.push(cell);
-					// Block cells in corresponding row and column
-					blockCells(cell);
-					// Determine intersection cells
-					setIntersectCells();
-					// Add new rhythm for this cell
-					rhythms.push(new Rhythm(cell, cells));
-				} else if (cell.canActivate && cell.active) {
-					// Deactivate this cell
-					cell.deactivate();
-					// Remove this cell from collection of active cells
-					removeCell(cell);
-					// Remove the rhythm associated with this cell
-					removeRhythm(cell);
-					// Unblock all cells
-					unblockCells();
-					// Block cells for all active cells in collection
-					activeCells.forEach(cell => {
+	if (sessionStarted) {
+		cells.forEach((row,rowIndex) => {
+			row.forEach((cell, cellIndex) => {
+				if (cell.within(mouseX - width / 2, mouseY - height / 2)) {
+					if (cell.canActivate && !cell.active) {
+						// Activate this cell
+						cell.activate();
+						// Add this cell to collection of active cells
+						activeCells.push(cell);
+						// Block cells in corresponding row and column
 						blockCells(cell);
-					})
-					// Determine intersection cells
-					setIntersectCells();
+						// Determine intersection cells
+						setIntersectCells();
+						// Add new rhythm for this cell
+						rhythms.push(new Rhythm(cell, cells));
+					} else if (cell.canActivate && cell.active) {
+						// Deactivate this cell
+						cell.deactivate();
+						// Remove this cell from collection of active cells
+						removeCell(cell);
+						// Remove the rhythm associated with this cell
+						removeRhythm(cell);
+						// Unblock all cells
+						unblockCells();
+						// Block cells for all active cells in collection
+						activeCells.forEach(cell => {
+							blockCells(cell);
+						})
+						// Determine intersection cells
+						setIntersectCells();
+					}
 				}
-			}
+			})
 		})
-	})
+	} else {
+		// Initialise SoundLoop after first mouse click
+		sloop = new p5.SoundLoop(go, 0.125);
+		sloop.start();
+		sessionStarted = true;
+	}
 	return false;
 }
 
