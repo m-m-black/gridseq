@@ -9,8 +9,20 @@ let rhythms;
 let interval;
 let expected;
 
+let sounds;
+
 const NUM_ROWS = 10;
 const TEMPO = 125;
+
+function preload() {
+	sounds = [];
+	for (let i = 0; i < 100; i++) {
+		sounds[i] = loadSound("audio/" + i + ".wav");
+	}
+	sounds.forEach(sound => {
+		sound.playMode('restart');
+	})
+}
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
@@ -22,50 +34,27 @@ function setup() {
 	activeCells = [];
 	intersectCells = [];
 	rhythms = [];
-	
-	//setInterval(go, TEMPO);
-	
-	interval = TEMPO;
-	expected = Date.now() + interval;
-	//setTimeout(step, interval);
 
 	let sloop = new p5.SoundLoop(go, 0.125);
 	sloop.start();
-
-}
-
-function step(cycleStartTime) {
-	let dt = Date.now() - expected;
-	go(cycleStartTime);
-	expected += interval;
-	setTimeout(step, Math.max(0, interval - dt));
 }
 
 function draw() {
 	background(0);
 	rectMode(CENTER);
 
+	noStroke();
 	translate(width / 2, height / 2);
 	fill(100);
 	rect(0, 0, axis, axis);
 
+	noFill();
+	strokeWeight(1);
+	stroke(255);
+
 	cells.forEach((row, rowIndex) => {
 		row.forEach((cell, cellIndex) => {
 			cell.display();
-			let within = cell.within(mouseX - width / 2, mouseY - height / 2);
-			if (within) {
-				cell.highlight();
-				grid.rows[rowIndex].forEach(c => {
-					c.highlight();
-					c.display();
-				})
-				grid.columns[cellIndex].forEach(c => {
-					c.highlight();
-					c.display();
-				})
-			} else {
-				cell.dehighlight();
-			}
 		})
 	})
 }
@@ -112,13 +101,6 @@ function mousePressed() {
 	})
 	return false;
 }
-
-// DEBUGGING FUNCTION
-// function keyPressed() {
-// 	rhythms.forEach(rhythm => {
-// 		rhythm.update(cells);
-// 	})
-// }
 
 function unblockCells() {
 	cells.forEach(row => {

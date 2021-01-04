@@ -14,24 +14,42 @@ class Cell {
 		// Audio components
 		this.synth = new Synth();
 		this.playing = false; // Is the synth currently playing a note?
+		this.sound = sounds[int(random(sounds.length))];
 	}
 
 	display() {
-		fill(this.color);
-		rect(this.x, this.y, this.size, this.size);
-		let string = this.rowIndex + ", " + this.colIndex;
-		// Text for debugging
-		fill(255);
-		textAlign(CENTER, CENTER);
-		text(string, this.x, this.y);
+		strokeWeight(3);
+		if (this.active) {
+			// White circle
+			fill(255, 200);
+			stroke(255);
+			ellipse(this.x, this.y, this.size * 0.75, this.size * 0.75);
+		} else if (this.isIntersect) {
+			// Blue circle
+			fill(0, 0, 128, 128);
+			stroke(255);
+			ellipse(this.x, this.y, this.size * 0.75, this.size * 0.75);
+		} else {
+			// Unfilled circle
+			noFill();
+			stroke(255);
+			ellipse(this.x, this.y, this.size * 0.75, this.size * 0.75);
+		}
+		if (this.highlighted && this.isIntersect) {
+			// Black circle
+			fill(0);
+			ellipse(this.x, this.y, this.size * 0.75, this.size * 0.75);
+		} else if (this.highlighted && !this.active) {
+			// Light grey circle
+			fill(128);
+			ellipse(this.x, this.y, this.size * 0.75, this.size * 0.75);
+		}
 	}
 
 	play(cycleStartTime) {
 		this.playing = true;
 		// Play the sound associated with this cell
-		//console.log("Play cell (" + this.rowIndex + ", " + this.colIndex + ")");
-		let note = int(random(48, 73));
-		this.synth.playNote(note, 0.25, cycleStartTime);
+		this.sound.play(cycleStartTime);
 		this.playing = false;
 	}
 
@@ -51,12 +69,14 @@ class Cell {
 	}
 
 	tempHighlight() {
+		this.highlighted = true;
 		if (!this.active && !this.isIntersect) {
 			this.currentColor = color(200, 200, 0);
 		}
 	}
 
 	deTempHighlight() {
+		this.highlighted = false;
 		if (!this.active && !this.isIntersect) {
 			this.currentColor = color(200, 0, 0);
 		}
