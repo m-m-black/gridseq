@@ -11,7 +11,7 @@ let sessionStarted;
 let soundloopStarted;
 
 const NUM_ROWS = 10;
-const TEMPO = 125;
+const TEMPO = 120;
 
 function preload() {
 	sounds = [];
@@ -24,7 +24,8 @@ function preload() {
 }
 
 function setup() {
-	createCanvas(windowWidth, windowHeight);
+	const canvasElt = createCanvas(windowWidth, windowHeight).elt;
+	canvasElt.style.width = '100%', canvasElt.style.height = '100%';
 	axis = windowWidth < windowHeight ? windowWidth : windowHeight;
 	cellSize = axis / NUM_ROWS;
 	cells = initCells();
@@ -79,7 +80,7 @@ function mousePressed() {
 	if (sessionStarted) {
 		if (!soundloopStarted) {
 			// Initialise and start SoundLoop after first click on the grid
-			sloop = new p5.SoundLoop(go, 0.125);
+			sloop = new p5.SoundLoop(go, 60 / (TEMPO * 4));
 			sloop.start();
 			soundloopStarted = true;
 		}
