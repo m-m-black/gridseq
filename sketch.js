@@ -109,10 +109,10 @@ function mousePressed() {
 			})
 		})
 	} else {
+		sessionStarted = true;
 		// Initialise SoundLoop after first mouse click
 		sloop = new p5.SoundLoop(go, 0.125);
 		sloop.start();
-		sessionStarted = true;
 	}
 	return false;
 }
