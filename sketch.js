@@ -8,6 +8,7 @@ let rhythms;
 let sounds;
 let sloop;
 let sessionStarted;
+let soundloopStarted;
 
 const NUM_ROWS = 10;
 const TEMPO = 125;
@@ -33,6 +34,7 @@ function setup() {
 	intersectCells = [];
 	rhythms = [];
 	sessionStarted = false;
+	soundloopStarted = false;
 }
 
 function draw() {
@@ -75,6 +77,12 @@ function go(cycleStartTime) {
 
 function mousePressed() {
 	if (sessionStarted) {
+		if (!soundloopStarted) {
+			// Initialise and start SoundLoop after first click on the grid
+			sloop = new p5.SoundLoop(go, 0.125);
+			sloop.start();
+			soundloopStarted = true;
+		}
 		cells.forEach((row,rowIndex) => {
 			row.forEach((cell, cellIndex) => {
 				if (cell.within(mouseX - width / 2, mouseY - height / 2)) {
@@ -110,9 +118,6 @@ function mousePressed() {
 		})
 	} else {
 		sessionStarted = true;
-		// Initialise SoundLoop after first mouse click
-		sloop = new p5.SoundLoop(go, 0.125);
-		sloop.start();
 	}
 	return false;
 }
