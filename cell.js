@@ -1,5 +1,5 @@
 class Cell {
-	constructor(x, y, size, rowIndex, colIndex) {
+	constructor(x, y, size, rowIndex, colIndex, sound) {
 		this.x = x;
 		this.y = y;
 		this.size = size;
@@ -8,12 +8,10 @@ class Cell {
 		this.highlighted = false;
 		this.active = false; // Cell has been clicked on
 		this.canActivate = true; // Cell can be clicked on
-		this.isIntersect = false; // Cells is at an intersection point
-		this.color = color(200, 0, 0);
-		this.currentColor = color(200, 0, 0);
+		this.isIntersect = false; // Cell is at an intersection point
 		// Audio components
 		this.playing = false; // Is the synth currently playing a note?
-		this.sound = sounds[int(random(sounds.length))];
+		this.sound = sound;
 	}
 
 	display() {
@@ -47,57 +45,31 @@ class Cell {
 
 	play(cycleStartTime) {
 		this.playing = true;
-		// Play the sound associated with this cell
 		this.sound.play(cycleStartTime);
 		this.playing = false;
 	}
 
 	highlight() {
-		// "active" and "isIntersect" are special statuses not to be highlighted
-		if (!this.active && !this.isIntersect) {
-			this.color = color(0, 200, 0);
-		}
+		this.highlighted = true;
 	}
 
 	dehighlight() {
-		// "active" and "isIntersect" are special statuses not to be highlighted
-		if (!this.active && !this.isIntersect) {
-			//this.color = color(200, 0, 0);
-			this.color = this.currentColor;
-		}
-	}
-
-	tempHighlight() {
-		this.highlighted = true;
-		if (!this.active && !this.isIntersect) {
-			this.currentColor = color(200, 200, 0);
-		}
-	}
-
-	deTempHighlight() {
 		this.highlighted = false;
-		if (!this.active && !this.isIntersect) {
-			this.currentColor = color(200, 0, 0);
-		}
 	}
 
 	activate() {
-		this.color = color(0, 0, 200);
 		this.active = true;
 	}
 
 	deactivate() {
-		this.color = color(200, 0, 0);
 		this.active = false;
 	}
 
 	setIntersect() {
-		this.color = color(0);
 		this.isIntersect = true;
 	}
 
 	removeIntersect() {
-		this.color = color(200, 0, 0);
 		this.isIntersect = false;
 	}
 

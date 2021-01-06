@@ -22,85 +22,71 @@ class Rhythm {
 	updateRow(cells) {
 		// Remove highlighting from current cells
 		if (this.left) {
-			this.left.deTempHighlight();
+			this.left.dehighlight();
 		}
 		if (this.right) {
-			this.right.deTempHighlight();
+			this.right.dehighlight();
 		}
-		// Check if currentLeft is at the end
+		// Update positions of left and right cells
 		if (this.left && this.left === this.endLeft) {
-			// If so, increment counter
 			this.atEndRow++;
 			this.left = null;
 		} else if (this.left) {
-			// Otherwise, move currentLeft to the left by 1
 			this.left = cells[this.left.rowIndex][this.left.colIndex-1];
 
 		}
-		// Check if currentRight is at the end
 		if (this.right && this.right === this.endRight) {
-			// If so, increment counter
 			this.atEndRow++;
 			this.right = null;
 		} else if (this.right) {
-			// Otherwise, move currentRight to the right by 1
 			this.right = cells[this.right.rowIndex][this.right.colIndex+1];
 		}
 		if (this.atEndRow >= 2) {
-			// If counter is 2, reset currentLeft and currentRight to the start
 			this.left = this.start;
 			this.right = this.start;
-			// Reset counter
 			this.atEndRow = 0;
 		}
 		// Add highlighting to new current cells
 		if (this.left) {
-			this.left.tempHighlight();
+			this.left.highlight();
 		}
 		if (this.right) {
-			this.right.tempHighlight();
+			this.right.highlight();
 		}
 	}
 
 	updateCol(cells) {
 		// Remove highlighting from current cells
 		if (this.up) {
-			this.up.deTempHighlight();
+			this.up.dehighlight();
 		}
 		if (this.down) {
-			this.down.deTempHighlight();
+			this.down.dehighlight();
 		}
-		// Check if currentUp is at the end
+		// Update positions of up and down cells
 		if (this.up && this.up === this.endUp) {
-			// If so, increment counter
 			this.atEndCol++;
 			this.up = null;
 		} else if (this.up) {
-			// Otherwise, move currentUp up by 1
 			this.up = cells[this.up.rowIndex-1][this.up.colIndex];
 		}
-		// Check if currentDown is at the end
 		if (this.down && this.down === this.endDown) {
-			// If so, increment counter
 			this.atEndCol++;
 			this.down = null;
 		} else if (this.down) {
-			// Otherwise, move currentDown down by 1
 			this.down = cells[this.down.rowIndex+1][this.down.colIndex];
 		}
 		if (this.atEndCol >= 2) {
-			// If counter is 2, reset currentUp and currentDown to the start
 			this.up = this.start;
 			this.down = this.start;
-			// Reset counter
 			this.atEndCol = 0;
 		}
 		// Add highlighting to new current cells
 		if (this.up) {
-			this.up.tempHighlight();
+			this.up.highlight();
 		}
 		if (this.down) {
-			this.down.tempHighlight();
+			this.down.highlight();
 		}
 	}
 
@@ -121,16 +107,16 @@ class Rhythm {
 
 	cleanup() {
 		if (this.up) {
-			this.up.deTempHighlight();
+			this.up.dehighlight();
 		}
 		if (this.down) {
-			this.down.deTempHighlight();
+			this.down.dehighlight();
 		}
 		if (this.left) {
-			this.left.deTempHighlight();
+			this.left.dehighlight();
 		}
 		if (this.right) {
-			this.right.deTempHighlight();
+			this.right.dehighlight();
 		}
 	}
 }

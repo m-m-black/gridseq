@@ -186,6 +186,7 @@ function removeRhythm(cell) {
 }
 
 function initCells() {
+	let soundCounter = 0;
 	let cells = [];
 	let rowIndex = 0;
 	let colIndex = 0;
@@ -195,7 +196,8 @@ function initCells() {
 		for (let j = 0; j < axis; j += cellSize) {
 			let x = j - (axis / 2) + (cellSize / 2);
 			let y = i - (axis / 2) + (cellSize / 2);
-			row.push(new Cell(x, y, cellSize, rowIndex, colIndex));
+			row.push(new Cell(x, y, cellSize, rowIndex, colIndex, sounds[soundCounter]));
+			soundCounter++;
 			colIndex++;
 		}
 		cells.push(row);
