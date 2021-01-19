@@ -64,10 +64,19 @@ function draw() {
 
 function drawText() {
 	fill(200);
+	strokeWeight(1);
 	textSize(width / 50);
 	textAlign(CENTER, CENTER);
 	textFont("Comfortaa");
-	text("Click anywhere to start...", width / 2, height / 2);
+	let instructions1 = "HOW TO PLAY:\n"
+			+ "1. Turn your sound on\n"
+			+ "2. Click a cell to activate it - it will turn white\n"
+			+ "3. Activate multiple cells to create a rhythm\n"
+			+ "4. Click an active (white) cell to deactivate it";
+	let instructions2 = "Only 1 cell can be active in each row/column";
+	text(instructions1, width / 2, height * (1 / 3));
+	text(instructions2, width / 2, height / 2);
+	text("Click anywhere to start...", width / 2, height * (2 / 3));
 }
 
 function go(cycleStartTime) {
